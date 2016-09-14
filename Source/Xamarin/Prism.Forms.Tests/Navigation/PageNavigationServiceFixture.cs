@@ -5,7 +5,6 @@ using Prism.Forms.Tests.Mocks.Views;
 using Prism.Logging;
 using Prism.Navigation;
 using System;
-using System.Linq;
 using Xamarin.Forms;
 using Xunit;
 
@@ -681,6 +680,7 @@ namespace Prism.Forms.Tests.Navigation
             Assert.Equal(1, tabbedPageViewModel.OnNavigatedToCount);
             var pageMock = (PageMock) tabbedPage.Children[1];
             var pageMockViewModel = (PageMockViewModel) pageMock.BindingContext;
+            Assert.Equal(1, pageMockViewModel.OnNavigatedFromCount);
             Assert.Equal(2, pageMockViewModel.OnNavigatedToCount);
         }
 
