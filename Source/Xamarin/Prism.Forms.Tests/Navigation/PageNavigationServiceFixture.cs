@@ -664,7 +664,7 @@ namespace Prism.Forms.Tests.Navigation
         /// OnNavigatedTo with TabbedPage (https://github.com/PrismLibrary/Prism/issues/767)
         /// </summary>
         [Fact]
-        public async void DeepNavigate_ToNavPage_ToTabbedPage()
+        public async void DeepNavigate_ToNavPage_ToTabbedPage_ToChild_ToModalContentPage_GoBack()
         {
             var navigationService = new PageNavigationServiceMock(_container, _applicationProvider, _loggerFacade);
             var rootPage = new ContentPageMock();
