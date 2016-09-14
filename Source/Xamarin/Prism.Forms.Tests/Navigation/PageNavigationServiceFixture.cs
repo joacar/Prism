@@ -677,8 +677,11 @@ namespace Prism.Forms.Tests.Navigation
             await navigationService.GoBackAsync();
             var navigationPage = (NavigationPageMock)rootPage.Navigation.ModalStack[0];
             var tabbedPage = (TabbedPageMock)navigationPage.CurrentPage;
-           var tabbedPageViewModel = (TabbedPageMockViewModel)tabbedPage.BindingContext;
-            Assert.Equal(2, tabbedPageViewModel.OnNavigatedToCount);
+            var tabbedPageViewModel = (TabbedPageMockViewModel)tabbedPage.BindingContext;
+            Assert.Equal(1, tabbedPageViewModel.OnNavigatedToCount);
+            var pageMock = (PageMock) tabbedPage.Children[1];
+            var pageMockViewModel = (PageMockViewModel) pageMock.BindingContext;
+            Assert.Equal(2, pageMockViewModel.OnNavigatedToCount);
         }
 
         [Fact]
