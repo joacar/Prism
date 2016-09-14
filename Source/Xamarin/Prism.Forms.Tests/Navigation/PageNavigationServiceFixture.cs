@@ -5,6 +5,7 @@ using Prism.Forms.Tests.Mocks.Views;
 using Prism.Logging;
 using Prism.Navigation;
 using System;
+using System.Linq;
 using Xamarin.Forms;
 using Xunit;
 
@@ -24,6 +25,7 @@ namespace Prism.Forms.Tests.Navigation
 
             _container.Register("ContentPage", typeof(ContentPageMock));
             _container.Register(typeof(ContentPageMockViewModel).FullName, typeof(ContentPageMock));
+            _container.Register("ContentModalPage", typeof(ContentModalPageMock));
 
             _container.Register("NavigationPage", typeof(NavigationPageMock));
             _container.Register("NavigationPage-Empty", typeof(NavigationPageEmptyMock));
@@ -635,7 +637,7 @@ namespace Prism.Forms.Tests.Navigation
             ((MasterDetailPageEmptyMockViewModel)rootPage.BindingContext).IsPresentedAfterNavigation = false;
 
             Assert.Null(rootPage.Detail);
-            Assert.False(rootPage.IsPresented);            
+            Assert.False(rootPage.IsPresented);
 
             await navigationService.NavigateAsync("TabbedPage");
             Assert.IsType(typeof(TabbedPageMock), rootPage.Detail);
@@ -656,6 +658,27 @@ namespace Prism.Forms.Tests.Navigation
             Assert.NotNull(tabbedPage);
             Assert.NotNull(tabbedPage.CurrentPage);
             Assert.IsType(typeof(PageMock), tabbedPage.CurrentPage);
+        }
+
+        /// <summary>
+        /// OnNavigatedTo with TabbedPage (https://github.com/PrismLibrary/Prism/issues/767)
+        /// </summary>
+        [Fact]
+        public async void DeepNavigate_ToNavPage_ToTabbedPage()
+        {
+            var navigationService = new PageNavigationServiceMock(_container, _applicationProvider, _loggerFacade);
+            var rootPage = new ContentPageMock();
+            ((IPageAware)navigationService).Page = rootPage;
+
+            await navigationService.NavigateAsync("NavigationPage/TabbedPage/PageMock");
+
+            await navigationService.NavigateAsync("ContentModalPage", null, animated: false);
+
+            await navigationService.GoBackAsync();
+            var navigationPage = (NavigationPageMock)rootPage.Navigation.ModalStack[0];
+            var tabbedPage = (TabbedPageMock)navigationPage.CurrentPage;
+           var tabbedPageViewModel = (TabbedPageMockViewModel)tabbedPage.BindingContext;
+            Assert.Equal(2, tabbedPageViewModel.OnNavigatedToCount);
         }
 
         [Fact]

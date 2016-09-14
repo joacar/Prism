@@ -1,12 +1,11 @@
 ﻿using Prism.Mvvm;
-using Prism.Navigation;
 using Xamarin.Forms;
 
 namespace Prism.Forms.Tests.Mocks.Views
 {
-    public class PageMock : Page
+    public class ContentModalPageMock : ContentPage
     {
-        public PageMock()
+        public ContentModalPageMock()
         {
             ViewModelLocator.SetAutowireViewModel(this, true);
         }

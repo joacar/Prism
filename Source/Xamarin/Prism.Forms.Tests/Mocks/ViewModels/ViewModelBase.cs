@@ -12,15 +12,15 @@ namespace Prism.Forms.Tests.Mocks.ViewModels
 
         public bool OnNavigatedFromCalled { get; private set; } = false;
 
-        public void OnNavigatedFrom(NavigationParameters parameters)
+        public virtual void OnNavigatedFrom(NavigationParameters parameters)
         {
-            OnNavigatedFromCalled = true;
+            OnNavigatedFromCalled = true;        
             NavigatedFromParameters = parameters;
         }
 
-        public void OnNavigatedTo(NavigationParameters parameters)
+        public virtual void OnNavigatedTo(NavigationParameters parameters)
         {
-            OnNavigatedToCalled = true;
+            OnNavigatedToCalled = true;            
             NavigatedToParameters = parameters;
         }
     }
